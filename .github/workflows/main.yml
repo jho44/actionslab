@@ -1,12 +1,13 @@
-name: CD
+name: CI
 
 on:
   push:
-    tags:
-      - '*'
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
-  release:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -15,7 +16,7 @@ jobs:
 
     # Runs a single command using the runners shell
     - name: Run a one-line script
-      run: echo I got tagged
+      run: echo Hello, world!
 
     # Runs a set of commands using the runners shell
     - name: Run a multi-line script
