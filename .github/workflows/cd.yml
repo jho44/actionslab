@@ -14,16 +14,12 @@ jobs:
     - name: checkout
       uses: actions/checkout@v2
 
-    - name: upload zip
-      uses: fnkr/github-action-ghr@v1
+    - name: release
+      uses: .github/actions/github-release
       env:
-        GHR_COMPRESS: zip
-        GHR_PATH: ./
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: upload tar.gz
-      uses: fnkr/github-action-ghr@v1
-      env:
-        GHR_COMPRESS: gz
-        GHR_PATH: ./
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
+    # Runs a single command using the runners shell
+#    - name: Run a one-line script
+#      run: echo Hello, world!
+

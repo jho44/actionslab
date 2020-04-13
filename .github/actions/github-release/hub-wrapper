@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+set -e -u -o pipefail
+
+[[ "$GITHUB_REF" != refs/tags/* ]] && echo "${GITHUB_REF} is not a tag, exiting..." && exit 78
+VERSION=$(basename "$GITHUB_REF")
+
+BUILDS="$HOME/builds"
+mkdir -p "$BUILDS"
+
+IFS="/" read -r org repo <<< "$GITHUB_REPOSITORY"
+
+cd "$HOME"
+go get -u github.com/digitalocean/github-changelog-generator
+cd "$GITHUB_WORKSPACE"
+tfile=$(mktemp "/tmp/$repo-CHANGELOG-XXXXXX")
+echo "$VERSION" >"$tfile"
+echo "" >>"$tfile"
+github-changelog-generator -org "$org" -repo "$repo" >>"$tfile"
+
+zip -x ".git*" -x ".whitesource" -x "vendor/*" -ro "$BUILDS/$VERSION.zip" "$GITHUB_WORKSPACE"
+tar --exclude ".git*" --exclude ".whitesource" --exclude "vendor/*" -zcf "$BUILDS/$VERSION.tar.gz" "$GITHUB_WORKSPACE"
+
+/usr/local/bin/hub release create \
+                   --file "$tfile" \
+                   --attach "$BUILDS/$VERSION.zip" \
+                   --attach "$BUILDS/$VERSION.tar.gz" \
+                   "$VERSION"
