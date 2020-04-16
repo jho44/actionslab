@@ -1,20 +1,17 @@
 FROM golang:1.14-alpine
 
 ENV HUB_VERSION 2.14.2
-ENV HUB_URI https://github.com/github/hub/releases/download/v$HUB_VERSION
-ENV HUB hub-linux-amd64-$HUB_VERSION
-
-COPY hub-wrapper /usr/local/bin/
+ENV HUB_INSTALLER https://github.com/github/hub/raw/master/script/get
 
 RUN apk add --no-cache \
         bash \
         coreutils \
         curl \
         git \
+        tar \
         xz && \
-    curl --silent -L ${HUB_URI}/${HUB}.tgz > ${HUB}.tgz && \
-    tar xvzf ${HUB}.tgz && \
-    ${HUB}/install && \
-    rm -rf ${HUB} ${HUB}.tgz
+    curl -fsSL ${HUB_INSTALLER} | bash -s ${HUB_VERSION}
+
+COPY hub-wrapper /usr/local/bin/
 
 ENTRYPOINT ["/usr/local/bin/hub-wrapper"]
