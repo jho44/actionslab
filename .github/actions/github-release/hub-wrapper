@@ -7,9 +7,7 @@ VERSION=$(basename "$GITHUB_REF")
 
 IFS="/" read -r org repo <<< "$GITHUB_REPOSITORY"
 
-cd "$HOME"
 go get -u github.com/digitalocean/github-changelog-generator
-cd "$GITHUB_WORKSPACE"
 
 tfile=$(mktemp "/tmp/$repo-CHANGELOG-XXXXXX")
 echo "$VERSION" >"$tfile"
@@ -17,5 +15,9 @@ echo "" >>"$tfile"
 github-changelog-generator -org "$org" -repo "$repo" >>"$tfile"
 
 cat "$tfile"
+
+ls -l /usr/local/bin/hub
+
+/usr/local/bin/hub version
 
 /usr/local/bin/hub release create --file "$tfile" "$VERSION"
