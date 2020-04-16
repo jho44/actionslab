@@ -16,4 +16,6 @@ github-changelog-generator -org "$org" -repo "$repo" >>"$tfile"
 
 cat "$tfile"
 
-bin/hub release create --file "$tfile" "$VERSION"
+hub version
+
+hub release create --file="$tfile" "$VERSION"
