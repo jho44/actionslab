@@ -14,9 +14,7 @@ RUN apk add --no-cache \
         xz && \
     curl --silent -L ${HUB_URI}/${HUB}.tgz > ${HUB}.tgz && \
     tar xvzf ${HUB}.tgz && \
-    mv ${HUB}/bin/hub /usr/local/bin/ && \
-    ls -l /usr/local/bin/hub && \
-    rm -rf ${HUB} ${HUB}.tgz && \
-    ls -l /usr/local/bin/hub
+    ${HUB}/install && \
+    rm -rf ${HUB} ${HUB}.tgz
 
 ENTRYPOINT ["/usr/local/bin/hub-wrapper"]
