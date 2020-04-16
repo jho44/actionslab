@@ -14,6 +14,4 @@ echo "$VERSION" >"$tfile"
 echo "" >>"$tfile"
 github-changelog-generator -org "$org" -repo "$repo" >>"$tfile"
 
-cat "$tfile"
-
-bin/hub release create --file "$tfile" "$VERSION"
+GITHUB_TOKEN="$RELEASE_TOKEN" hub release create --file="$tfile" "$VERSION"
