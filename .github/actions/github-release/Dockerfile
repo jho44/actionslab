@@ -1,16 +1,8 @@
-FROM golang:1.14-alpine
+FROM golang:1.14-buster
 
-ENV HUB_VERSION 2.14.2
-ENV HUB_INSTALLER https://github.com/github/hub/raw/master/script/get
-
-RUN apk add --no-cache \
-        bash \
-        coreutils \
-        curl \
-        git \
-        tar \
-        xz && \
-    curl -fsSL ${HUB_INSTALLER} | bash -s ${HUB_VERSION}
+RUN apt-get clean \
+        && apt-get update \
+        && apt-get install --yes --no-install-recommends hub
 
 COPY hub-wrapper /usr/local/bin/
 
