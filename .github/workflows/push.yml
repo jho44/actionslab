@@ -1,0 +1,12 @@
+name: CD_check
+
+# Controls when the workflow will run
+on: pull_request
+
+jobs:
+  check:
+    if: ${{ github.base_ref == 'main' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - run: echo "HUZZAH"
