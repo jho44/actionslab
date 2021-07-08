@@ -1,0 +1,18 @@
+name: Artifact Over Commit
+
+# Controls when the workflow will run
+on: pull_request
+
+jobs:
+  do_the_thing:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - run: echo "HUZZAH"
+      - name: Upload hello world file
+        uses: actions/upload-artifact@v1
+        with:
+          name: Big Night
+          path: dist/test.txt
