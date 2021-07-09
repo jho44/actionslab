@@ -1,0 +1,17 @@
+name: CD_check
+
+on: push
+
+jobs:
+  buahahah:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: invoke do_the_thing
+        uses: benc-uk/workflow-dispatch@v1.1.0
+        with:
+          workflow: Artifact Over Commit
+          token: ${{ secrets.AUTH_TOKEN }}

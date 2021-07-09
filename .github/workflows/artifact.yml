@@ -1,0 +1,25 @@
+name: Artifact Over Commit
+
+# Controls when the workflow will run
+on: workflow_dispatch
+
+jobs:
+  do_the_thing:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      # - name: Dump GitHub context
+      #   env:
+      #     GITHUB_CONTEXT: ${{ toJSON(github) }}
+      #   run: echo "$GITHUB_CONTEXT"
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+      - name: Upload hello world file
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${GITHUB_REF#refs/heads/}
+          path: dist/test.txt
