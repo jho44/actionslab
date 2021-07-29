@@ -1,21 +1,21 @@
-name: CD
+name: CI
 
-on:
-  push:
-    tags:
-      - '*'
+on: push
 
 jobs:
-  release:
-    name: Release
+  blahblah:
     runs-on: ubuntu-latest
 
     steps:
     - name: checkout
       uses: actions/checkout@v2
 
+    - name: Dump GitHub context
+      env:
+        GITHUB_CONTEXT: ${{ toJSON(github) }}
+      run: echo "$GITHUB_CONTEXT"
+
     - name: release
       uses: ./.github/actions/github-release
       env:
         RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-
