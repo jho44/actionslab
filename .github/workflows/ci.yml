@@ -1,0 +1,22 @@
+name: CI
+
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: random echo
+        shell: bash
+        run: echo "hello"
+
+      - name: invoke build
+        if: ${{ github.ref == 'refs/heads/maincopy' }}
+        uses: benc-uk/workflow-dispatch@v1.1.0
+        with:
+          workflow: CD
+          token: ${{ secrets.AUTH_TOKEN }}
