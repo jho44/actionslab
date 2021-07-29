@@ -1,21 +1,30 @@
 name: CD
 
-on:
-  push:
-    tags:
-      - '*'
+on: workflow_dispatch
 
 jobs:
-  release:
-    name: Release
+  build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: checkout
-      uses: actions/checkout@v2
+      - name: checkout
+        uses: actions/checkout@v2
 
-    - name: release
-      uses: ./.github/actions/github-release
-      env:
-        RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+      - name: create "build"
+        run: echo "pancakes" > pancakes.txt
 
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+
+      - name: push builds to `deployment`
+        shell: bash
+        run: |
+          set -x
+          git config user.name "Jessica Ho"
+          git config user.email hojessica1230@gmail.com
+          git update-index -q --refresh
+          git add --force pancakes.txt
+          git commit -m "pushing builds" --no-verify
+          git push --force origin ${{ steps.extract_branch.outputs.branch }}:deployment
