@@ -6,16 +6,26 @@ on:
       - '*'
 
 jobs:
-  release:
-    name: Release
-    runs-on: ubuntu-latest
+  request:
+    name: Request DevEx review on opened PRs
+    runs-on: ubuntu-20.04
 
     steps:
-    - name: checkout
-      uses: actions/checkout@v2
+      # - name: Create PR review request
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   run: |
+      #     gh pr edit ${{ github.event.pull_request.html_url }} \
+      #         --add-reviewer yourorg/core
 
-    - name: release
-      uses: ./.github/actions/github-release
-      env:
-        RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+      - name: Verify Changed files
+        uses: tj-actions/verify-changed-files@v11
+        id: verify-changed-files
+        with:
+          files: |
+             src/validators/*
 
+      - name: Run step only when files change.
+        if: steps.verify-changed-files.outputs.files_changed == 'true'
+        run: |
+          echo "Changed files: ${{ steps.verify-changed-files.outputs.changed_files }}"
