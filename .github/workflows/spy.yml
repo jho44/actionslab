@@ -1,6 +1,6 @@
-# This is a basic workflow to help you get started with Actions
+# # This is a basic workflow to help you get started with Actions
 
-name: Spy
+# name: Spy
 
 # Controls when the workflow will run
 on:
@@ -8,43 +8,43 @@ on:
   pull_request:
     branches: [ "main" ]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
-jobs:
-  # This workflow contains a single job called "request"
-  request:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+# # A workflow run is made up of one or more jobs that can run sequentially or in parallel
+# jobs:
+#   # This workflow contains a single job called "request"
+#   request:
+#     # The type of runner that the job will run on
+#     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # - name: Change file in directory
+#     # Steps represent a sequence of tasks that will be executed as part of the job
+#     steps:
+#       # - name: Change file in directory
+#       #   run: |
+#       #     echo "Changed" > src/validators/new.txt
+#       #     echo "Changed" >> src/validators/letters/create.js
+
+#       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+#       - uses: actions/checkout@v3
+#         with:
+#           fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
+
+#       - name: Get changed files
+#         id: changed-files
+#         uses: tj-actions/changed-files@v29.0.0
+
+#       - name: List all changed files
+#         run: |
+#           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+#             if [[ $file == *"src/validators/"* ]]; then
+#               echo '::set-output name=VALIDATORS_CHANGED::true'
+#               break
+#             fi
+#           done
+#         id: my-changed-files
+
+      # - name: Ask for DevEx's approval only when validators change.
+      #   if: steps.my-changed-files.outputs.VALIDATORS_CHANGED == 'true'
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       #   run: |
-      #     echo "Changed" > src/validators/new.txt
-      #     echo "Changed" >> src/validators/letters/create.js
-
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
-
-      - name: Get changed files
-        id: changed-files
-        uses: tj-actions/changed-files@v29.0.0
-
-      - name: List all changed files
-        run: |
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            if [[ $file == *"src/validators/"* ]]; then
-              echo '::set-output name=VALIDATORS_CHANGED::true'
-              break
-            fi
-          done
-        id: my-changed-files
-
-      - name: Ask for DevEx's approval only when validators change.
-        if: steps.my-changed-files.outputs.VALIDATORS_CHANGED == 'true'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh pr edit ${{ github.event.pull_request.html_url }} \
-              --add-reviewer yourorg/core
+      #     gh pr edit ${{ github.event.pull_request.html_url }} \
+      #         --add-reviewer yourorg/core
