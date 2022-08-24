@@ -13,4 +13,4 @@ module.exports = ModelBase.extend({
     };
   }
 });
-// a smol change
+// another smol change
