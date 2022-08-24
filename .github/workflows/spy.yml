@@ -4,9 +4,7 @@ name: Spy
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
-  push:
-    branches: [ "main" ]
+  # Triggers the workflow pull request events but only for the "main" branch
   pull_request:
     branches: [ "main" ]
 
@@ -43,7 +41,10 @@ jobs:
           done
         id: my-changed-files
 
-      - name: Run step only when validators change.
+      - name: Ask for DevEx's approval only when validators change.
         if: steps.my-changed-files.outputs.VALIDATORS_CHANGED == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "Changed validators!"
+          gh pr edit ${{ github.event.pull_request.html_url }} \
+              --add-reviewer yourorg/core
