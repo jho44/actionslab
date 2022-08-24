@@ -81,4 +81,4 @@ const LetterCreateValidator = Joi.object().keys({
 });
 
 module.exports = LetterCreateValidator.concat(LetterPropertiesValidator).concat(CommonPropertiesValidator);
-// a smol change
+// another smol change
