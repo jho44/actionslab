@@ -36,10 +36,14 @@ jobs:
       - name: List all changed files
         run: |
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            echo "$file was changed"
+            if [[ $file == *"src/validators/"* ]]; then
+              echo '::set-output name=VALIDATORS_CHANGED::true'
+              break
+            fi
           done
+        id: my-changed-files
 
-      # - name: Run step only when files change.
-      #   if: steps.verify-changed-files.outputs.files_changed == 'true'
-      #   run: |
-      #     echo "Changed files: ${{ steps.verify-changed-files.outputs.changed_files }}"
+      - name: Run step only when validators change.
+        if: steps.my-changed-files.outputs.VALIDATORS_CHANGED == 'true'
+        run: |
+          echo "Changed validators!"
