@@ -34,9 +34,9 @@ jobs:
               echo '::set-output name=VALIDATORS_CHANGED::true'
               validators+=$file
               validators+=", "
+              echo ::set-output name=VALIDATORS::"${validators:0:${#validators} - 2}"
             fi
           done
-          echo ::set-output name=VALIDATORS::"${validators:0:${#validators} - 2}"
         id: my-changed-files
 
       - name: Inform DevEx when validators change
